@@ -57,7 +57,8 @@
     $(document).on('click', '#masuk', function ()
       {
           var id = $('#username').val();
-          setCookie("username", id, 30);
+          // setCookie("username", "0811", 30);
+          window.localStorage.setItem("username", id);
           checkCookie();
       }
     )
@@ -71,21 +72,21 @@
 
     $(document).on('click', '#duwik', function ()
         {
-          var user = getCookie("username");
+          var user = window.localStorage.getItem("username");
           loadDuwik(user);
         }
     )
 
     $(document).on('click', '#sidang', function ()
         {
-          var user = getCookie("username");
+          var user = window.localStorage.getItem("username");
           loadSidang(user);
         }
     )
 
     $(document).on('click', '#perkara', function ()
         {
-          var user = getCookie("username");
+          var user = window.localStorage.getItem("username");
           loadContact(user);
         }
     )
@@ -178,8 +179,10 @@
     }
 
     function checkCookie() {
-        var user = getCookie("username");
-        if (user != "") {
+        // var user = getCookie("username");
+        var user = window.localStorage.getItem("username");
+        // alert(user);
+        if (user != null) {
           loadPanel(user);
             loadContact(user);
         } else {
@@ -192,7 +195,8 @@
         }
     
     function RemCookie(){
-      setCookie("username","",30);
+      // setCookie("username","",30);
+      window.localStorage.removeItem("username");
       }
     })
 
