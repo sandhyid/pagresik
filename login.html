@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png" />
+<link rel="apple-touch-startup-image" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" href="apple-touch-startup-image-640x1096.html">
+<title>Pengadilan Agama Gresik Apps</title>
+<link rel="stylesheet" href="css/framework7.css">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="css/colors/turquoise.css">
+<link type="text/css" rel="stylesheet" href="css/swipebox.css" />
+<link type="text/css" rel="stylesheet" href="css/animations.css" />
+<!-- <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,700,900' rel='stylesheet' type='text/css'> -->
+</head>
+<body id="mobile_wrap">
+
+    <div class="statusbar-overlay"></div>
+
+    <div class="panel-overlay"></div>
+
+    <div id="panel"></div>
+
+    <div class="views">
+
+      <div class="view view-main">
+
+        <div class="pages  toolbar-through">
+        
+          <div id="isi"></div>
+        
+      </div>
+      </div>
+    </div>
+
+    
+        
+<script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
+<script src="js/jquery.validate.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/framework7.js"></script>
+<script type="text/javascript" src="js/my-app.js"></script>
+<script type="text/javascript" src="js/jquery.swipebox.js"></script>
+<script type="text/javascript" src="js/email.js"></script>
+<script type="text/javascript">
+  $(document).ready(function ()
+    {
+      checkCookie();
+    $('#submit').click(function()
+      {
+        var id = $('#username').val();
+        var pin = $('#password').val();
+        setCookie("username", "HAHA", 30);
+        checkCookie();
+       })
+    $(document).on('click', '#masuk', function ()
+      {
+          var id = $('#username').val();
+          setCookie("username", id, 30);
+          checkCookie();
+      }
+    )
+    
+    $(document).on('click', '#logout', function ()
+        {
+          RemCookie();
+          checkCookie();
+        }
+    )
+
+    $(document).on('click', '#duwik', function ()
+        {
+          var user = getCookie("username");
+          loadDuwik(user);
+        }
+    )
+
+    $(document).on('click', '#sidang', function ()
+        {
+          var user = getCookie("username");
+          loadSidang(user);
+        }
+    )
+
+    $(document).on('click', '#perkara', function ()
+        {
+          var user = getCookie("username");
+          loadContact(user);
+        }
+    )
+
+    function loadContact(user){
+      $.ajax({
+        url: 'http://pagresik.pe.hu/php/contact.php',
+        data: {id:user},
+        type: 'post'
+      }).done(function (xHasil)
+        {
+          $('#isi').html(xHasil);
+        })
+    }
+
+    function loadLogin(){
+      $.ajax({
+        url: 'http://pagresik.pe.hu/php/login.php',
+        type: 'post'
+      }).done(function (xHasil)
+        {
+          $('#isi').html(xHasil);
+        })
+      }
+
+    function loadPanel(user){
+      $.ajax({
+        url: 'http://pagresik.pe.hu/php/panel.php',
+        data: {id:user},
+        type: 'post'
+      }).done(function (xHasil)
+        {
+          $('#panel').html(xHasil);
+        })
+      }
+
+    function loadDuwik(user){
+      $.ajax({
+        url: 'http://pagresik.pe.hu/php/duwik.php',
+        data: {id:user},
+        type: 'post'
+      }).done(function (xHasil)
+        {
+          $('#isi').html(xHasil);
+        })
+      }
+
+    function loadSidang(user){
+      $.ajax({
+        url: 'http://pagresik.pe.hu/php/sidang.php',
+        data: {id:user},
+        type: 'post'
+      }).done(function (xHasil)
+        {
+          $('#isi').html(xHasil);
+        })
+      }
+
+    function cekLogin(id,pin){
+      $.ajax({
+        url: 'http://pagresik.pe.hu/php/ceklogin.php',
+        data: {id: id, pin: pin},
+        type: 'post'
+      }).done(function (xHasil)
+        {
+          $('#isi').html(xHasil);
+        })
+      }
+    
+    function setCookie(cname,cvalue,exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays*24*60*60*1000));
+        var expires = "expires=" + d.toGMTString();
+        document.cookie = cname+"="+cvalue+"; "+expires;
+    }
+
+    function getCookie(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0; i<ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0)==' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
+    function checkCookie() {
+        var user = getCookie("username");
+        if (user != "") {
+          loadPanel(user);
+            loadContact(user);
+        } else {
+          loadLogin();
+           // user = prompt("Please enter your name:","");
+           // if (user != "" && user != null) {
+           //     setCookie("username", user, 30);
+           // }
+          }
+        }
+    
+    function RemCookie(){
+      setCookie("username","",30);
+      }
+    })
+
+
+</script>
+  </body>
+</html>
